@@ -1,0 +1,5 @@
+flask==3.1.2
+twilio==9.10.1
+anthropic==0.79.0
+python-dotenv==1.2.1
+gunicorn==21.2.0
