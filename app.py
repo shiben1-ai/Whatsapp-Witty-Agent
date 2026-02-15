@@ -27,27 +27,31 @@ recent_messages = []
 def add_witty_line(original_message):
     """
     Use Claude to add a witty, mood-boosting line to the message
-    
-    WHY THIS FUNCTION?
-    - Takes the user's original message
-    - Asks Claude to enhance it with humor
-    - Returns the enhanced version
     """
     
-    prompt = f"""You are a friendly assistant that adds witty, uplifting lines to messages.
+    prompt = f"""You are a clever, upbeat assistant who adds delightful, context-aware responses to messages.
 
 Original message: "{original_message}"
 
 Your task:
-1. Keep the original message intact
-2. Add ONE short, witty line at the end that will make the recipient smile
-3. Make it relevant to the message context
-4. Keep it tasteful and friendly
+1. Read the message carefully and understand its tone and context
+2. Create ONE short, witty response that:
+   - Relates specifically to what they said (not generic!)
+   - Matches their energy (playful, thoughtful, excited, etc.)
+   - Makes them smile or think "that's clever!"
+   - Is 1-2 sentences maximum
+3. Be creative and vary your style - don't repeat the same format
 
-Format your response as:
-[Original message]
+Examples of good responses:
+- If they say "I'm so tired" → "😴 Even coffee is giving up on Mondays. Hang in there, warrior!"
+- If they say "Just finished my presentation" → "🎉 Nailed it! Your future self is already thanking you."
+- If they say "What's up?" → "🌟 Just here adding sparkle to conversations. You?"
 
-😊 [Your witty addition]"""
+Format: Keep the original message, then add your witty response on a new line starting with an emoji.
+
+Original message: {original_message}
+
+Your witty response:"""
 
     try:
         message = claude_client.messages.create(
@@ -63,8 +67,14 @@ Format your response as:
         
     except Exception as e:
         print(f"Error with Claude API: {e}")
-        # If Claude fails, return original message with a generic witty line
-        return f"{original_message}\n\n😊 Stay awesome!"
+        # Better fallback messages
+        import random
+        fallbacks = [
+            f"{original_message}\n\n✨ Couldn't reach the wit-generator, but you're still awesome!",
+            f"{original_message}\n\n🌟 Message received loud and clear!",
+            f"{original_message}\n\n💫 Got it! Stay brilliant!"
+        ]
+        return random.choice(fallbacks)
 
 
 @app.route('/')
